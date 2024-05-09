@@ -261,7 +261,7 @@ export default function Lab1() {
                     Please 
                     <a href="https://www.lipsum.com">click here</a>
                     to get dummy text<br/>
-                    <a href="./other-page.html">Other Page</a>
+                    <a href="https://github.com/leisecodes/kanbas-react-web-app">Other Page</a>
             </form>
         </div>
 
