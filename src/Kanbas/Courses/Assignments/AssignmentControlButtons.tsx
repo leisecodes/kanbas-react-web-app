@@ -4,7 +4,7 @@ export default function AssignmentControlButtons() {
   return (
     <div className="float-end">
       <span className="border border-black rounded-5 p-2">40% of Total</span>
-      <BsPlus />
+      <BsPlus className=""/>
       <IoEllipsisVertical className="fs-4" />
     </div>
 );}

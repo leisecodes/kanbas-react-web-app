@@ -2,23 +2,25 @@ import { BsPlus } from "react-icons/bs";
 import { BsGripVertical } from "react-icons/bs";
 import { RiFileEditLine } from "react-icons/ri";
 import { FaCaretDown } from "react-icons/fa";
+import { IoIosSearch } from "react-icons/io";
+
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import LessonControlButtons from "../Modules/LessonControlButtons";
 export default function Assignments() {
     return (
       <div id="wd-assignments">
-        <div id="wd-assignment-buttons" className="row" >
-        <div className="col-4">
+        <div id="wd-assignment-buttons" className="mb-4 row d-flex w-100 justify-items-between" >
+        <div className="me-5 col w-25 input-group">
+        <button className="btn btn-lg btn-outline-secondary border-end-0"><IoIosSearch/></button>
         <input id="wd-search-assignment"
-               placeholder="Search for Assignments"
-               className="form-control" />
+               placeholder="Search..."
+               className="form-control form-control-lg border-secondary border-start-0" />
+        
         </div>
-        <div className="col-4">
-        <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary">
+        <div className="col ms-5">
+        <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary me-1">
           <BsPlus/>
            Group</button>
-        </div>
-        <div className="col-4">
         <button id="wd-add-assignment" className="btn btn-danger btn-lg">
         <BsPlus/>
         Assignment</button>
@@ -26,19 +28,20 @@ export default function Assignments() {
         </div>
 
         <ul id="wd-modules" className="list-group rounded-0 w-100">
-        <li className="wd-module list-group-item p-0  fs-5 border-gray">
+        <li className="wd-module list-group-item p-0  fs-5 border-gray ">
             <div className="wd-title p-3 ps-2 bg-secondary">
             <BsGripVertical className="me-3 fs-3"/>
             <FaCaretDown />
             ASSIGNMENTS
             <AssignmentControlButtons/>
             </div>
-          </li> 
+          </li>
+          <div className="border border-end-0 border-top-0 border-bottom-0 border-4 border-success">
           <li className="wd-assignment-list-item list-group-item p-3 ps-1">
           <div className="d-flex">
-          <BsGripVertical className="me-3 fs-3"/>
-          <RiFileEditLine className="me-3 fs-3 text-success"/>
-          <div>
+          <BsGripVertical className="me-3 fs-3 mr-auto align-self-center"/>
+          <RiFileEditLine className="me-3 fs-3 text-success mr-auto align-self-center"/>
+          <div className="flex-grow-1 mr-auto">
             <a className="wd-assignment-link text-decoration-none"
               href="#/Kanbas/Courses/1234/Assignments/123">
               <span className="text-black fw-bolder">A1</span>
@@ -47,14 +50,16 @@ export default function Assignments() {
             <span className="text-danger">Multiple Modules</span> | <span className="fw-bold">Not available until</span> May 6 at 12:00am |<br/>
             <span className="fw-bold">Due</span> May 13 at 11:59pm | 100 pts
             </div>
-            </div>
-            <LessonControlButtons/>
+            <div className="float-end ml-auto align-self-center"><LessonControlButtons/></div>
+          </div>
           </li>
+          </div> 
+          <div className="border border-end-0 border-top-0 border-bottom-0 border-4 border-success">
           <li className="wd-assignment-list-item list-group-item p-3 ps-1">
           <div className="d-flex">
-          <BsGripVertical className="me-3 fs-3"/>
-          <RiFileEditLine className="me-3 fs-3 text-success"/>
-          <div>
+          <BsGripVertical className="me-3 fs-3 mr-auto align-self-center"/>
+          <RiFileEditLine className="me-3 fs-3 text-success mr-auto align-self-center"/>
+          <div className="flex-grow-1 mr-auto">
             <a className="wd-assignment-link text-decoration-none"
               href="#/Kanbas/Courses/1234/Assignments/123">
               <span className="text-black fw-bolder">A2</span>
@@ -63,14 +68,16 @@ export default function Assignments() {
             <span className="text-danger">Multiple Modules</span> | <span className="fw-bold">Not available until</span> May 13 at 12:00am |<br/>
             <span className="fw-bold">Due</span> May 20 at 11:59pm | 100 pts
             </div>
-            </div>
-            <LessonControlButtons/>
+            <div className="float-end ml-auto align-self-center"><LessonControlButtons/></div>
+          </div>
           </li>
+          </div>
+          <div className="border border-end-0 border-top-0 border-bottom-0 border-4 border-success">
           <li className="wd-assignment-list-item list-group-item p-3 ps-1">
           <div className="d-flex">
-          <BsGripVertical className="me-3 fs-3"/>
-          <RiFileEditLine className="me-3 fs-3 text-success"/>
-          <div>
+          <BsGripVertical className="me-3 fs-3 mr-auto align-self-center"/>
+          <RiFileEditLine className="me-3 fs-3 text-success mr-auto align-self-center"/>
+          <div className="flex-grow-1 mr-auto">
             <a className="wd-assignment-link text-decoration-none"
               href="#/Kanbas/Courses/1234/Assignments/123">
               <span className="text-black fw-bolder">A3</span>
@@ -79,9 +86,10 @@ export default function Assignments() {
             <span className="text-danger">Multiple Modules</span> | <span className="fw-bold">Not available until</span> May 20 at 12:00am |<br/>
             <span className="fw-bold">Due</span> May 27 at 11:59pm | 100 pts
             </div>
-            </div>
-            <LessonControlButtons/>
+            <div className="float-end ml-auto align-self-center"><LessonControlButtons/></div>
+          </div>
           </li>
+          </div>
         </ul>
         
       </div>
