@@ -1,0 +1,12 @@
+h1#wd-dashboard-title {
+    font-weight:100;
+}
+.wd-dashboard-course {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.wd-pagebreak {
+    padding: 0px;
+    margin-bottom: 0px;
+}
