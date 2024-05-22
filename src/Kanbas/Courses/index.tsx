@@ -5,6 +5,7 @@ import AssignmentEditor from "./Assignments/Editor";
 import Home from "./Home";
 import { FaBars } from "react-icons/fa6";
 import { Navigate, Route, Routes } from "react-router";
+import Grades from "./Grades/Grades";
 export default function Courses() {
   return (
     <div id="wd-courses">
@@ -26,6 +27,8 @@ export default function Courses() {
                      element={<Assignments/>} />
               <Route path="Assignments/:id"
                      element={<AssignmentEditor/>} />
+              <Route path="Grades"
+                     element={<Grades/>}/>
             </Routes>
             </div>
           </div>
