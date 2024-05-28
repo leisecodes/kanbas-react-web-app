@@ -1,13 +1,24 @@
-
-
+import { Link, useParams } from "react-router-dom";
+import { assignments } from "../../Database";
+import { courses } from "../../Database";
 export default function AssignmentEditor() {
+    const { aid } = useParams();
+    const { cid } = useParams();
+    const currentAssignment = assignments.filter((assignment)=>assignment._id===aid);
+    const currentCourse = courses.filter((course)=>course._id===cid);
+
     return (
+      
       <div id="wd-assignments-editor">
-        <h5><label htmlFor="wd-name" className="form-label">Assignment Name</label></h5>
-        <input id="wd-name" className="form-control" value="A1" />
-        <br />
-        <br />
-        <textarea className="form-control" rows={10} cols={55} id="wd-description">
+        
+        {currentAssignment.map((assignment)=>(
+          <div>
+          <h5><label htmlFor="wd-name" className="form-label">Assignment Name</label></h5>
+          <input id="wd-name" className="form-control" value={assignment.title} />
+          <br />
+          <br />
+
+          <textarea className="form-control" rows={10} cols={55} id="wd-description">
           The assignment is available online
           
           Submit a link to the landing page of your Web Application
@@ -25,12 +36,13 @@ export default function AssignmentEditor() {
         </textarea>
         <br />
         <br/>
-          <div className="row">
+
+        <div className="row">
             <div  className="col-3 text-end">
               <label htmlFor="wd-points" className="form-label">Points</label>
             </div>
             <div className="col-5">
-              <input className="form-control" id="wd-points" value={100} />
+              <input className="form-control" id="wd-points" value={assignment.points} />
             </div>
           </div>
           <br/>
@@ -96,15 +108,15 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-assign-to" className="form-label">Assign To</label><br/>
                 <input className="form-control mb-3" type="text" name="wd-assign-to" id="wd-assign-to" value="Everyone"></input>
                 <label htmlFor="wd-due-date" className="form-label">Due</label><br/>
-                <input className="form-control mb-3" type="date" id="wd-due-date"></input>
+                <input className="form-control mb-3" type="date" id="wd-due-date" value={assignment.dueDate}></input>
                 <div className="row">
                 <div className="col-6">
                 <label htmlFor="wd-available-from" className="form-label">Available From</label><br/>
-                <input className="form-control " type="date" id="wd-available-from"></input>
+                <input className="form-control " type="date" id="wd-available-from" value={assignment.fromDate}></input>
                 </div>
                 <div className="col-6">
                 <label htmlFor="wd-available-until" className="form-label">Until</label><br/>
-                <input className="form-control" type="date" id="wd-available-until"></input>
+                <input className="form-control" type="date" id="wd-available-until" value={assignment.dueDate}></input>
                 </div>
                 </div>
             </div>
@@ -118,10 +130,13 @@ export default function AssignmentEditor() {
             </div>
             <div className="row w-75 ">
             <div  className="d-flex justify-content-end mb-5">
-                <button className="btn btn-secondary me-1">Cancel</button>
-                <button className="btn btn-danger">Save</button>
+                <Link to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-secondary me-1">Cancel</Link>
+                <Link to={`/Kanbas/Courses/${cid}/Assignments`} className="btn btn-danger">Save</Link>
                 </div>
             </div>
+
+          </div>
+        ))}
       </div>
     );
   }

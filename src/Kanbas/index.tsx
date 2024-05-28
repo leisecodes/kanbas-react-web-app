@@ -3,6 +3,7 @@ import KanbasNavigation from "./Navigation";
 import { Routes, Route, Navigate } from "react-router";
 import Courses from "./Courses";
 import "./styles.css";
+import AssignmentEditor from "./Courses/Assignments/Editor";
 
 export default function Kanbas() {
   return (
@@ -16,7 +17,8 @@ export default function Kanbas() {
           <Routes>
               <Route path="/" element={<Navigate to="Dashboard" />} />
               <Route path="Dashboard" element={<Dashboard />} />
-              <Route path="Courses/:id/*" element={<Courses />} />
+              <Route path="Courses/:cid/*" element={<Courses />} />
+              <Route path="Courses/:cid/Assignments/:aid/*" element={<AssignmentEditor/>}/>
             </Routes>
       </div>
       </div>

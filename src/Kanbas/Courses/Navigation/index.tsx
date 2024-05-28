@@ -1,24 +1,26 @@
 import "./index.css"
+import {Link, useLocation, useParams} from 'react-router-dom';
 export default function CoursesNavigation() {
+  const { pathname } = useLocation();
+  const { cid } = useParams();
+  const links = [
+  {label : "Home"},
+  {label : "Modules"}, 
+   { label : "Piazza"}, 
+   {label : "Zoom"}, 
+   {label : "Assignments"}, 
+   {label : "Quizzes"}, 
+   {label : "Grades"}]
     return (
       <div id="wd-courses-navigation" className="list-group fs-5 rounded-0 me-5">
-          <a id="wd-course-home-link" href="#/Kanbas/Courses/1234/Home"
-          className="list-group-item active border border-0">Home</a>
-          <a id="wd-course-modules-link" href="#/Kanbas/Courses/1234/Modules"
-          className="list-group-item text-danger border border-0">Modules
-          </a>
-          <a id="wd-course-piazza-link"  href="#/Kanbas/Courses/1234/Piazza"
-          className="list-group-item text-danger border border-0">Piazza</a>
-          <a id="wd-course-zoom-link"    href="#/Kanbas/Courses/1234/Zoom"
-          className="list-group-item text-danger border border-0">Zoom</a>
-          <a id="wd-course-quizzes-link" href="#/Kanbas/Courses/1234/Assignments"
-          className="list-group-item text-danger border border-0">
-            Assignments</a>
-            <a id="wd-course-assignments-link" href="#/Kanbas/Courses/1234/Quizzes" 
-          className="list-group-item text-danger border border-0">Quizzes
-          </a>
-          <a id="wd-course-grades-link"  href="#/Kanbas/Courses/1234/Grades"
-          className="list-group-item text-danger border border-0">Grades</a>
+      {links.map((link) => (
+        <Link key={link.label} to={`/Kanbas/Courses/${cid}/${link.label}`} className={`list-group-item border-0 pt-1 pb-1 mb-3
+              ${pathname.includes(link.label) ? "active border" : "text-danger border"}`}>
+          {link.label}
+        </Link>
+      ))}
+
+      
       </div>
   );}
   
