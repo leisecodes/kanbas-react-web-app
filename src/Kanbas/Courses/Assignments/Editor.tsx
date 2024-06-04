@@ -1,38 +1,28 @@
 import { Link, useParams } from "react-router-dom";
 import { assignments } from "../../Database";
 import { courses } from "../../Database";
+import { addAssignment, deleteAssignment, updateAssignment, editAssignment } from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
 export default function AssignmentEditor() {
     const { aid } = useParams();
     const { cid } = useParams();
-    const currentAssignment = assignments.filter((assignment)=>assignment._id===aid);
+    const {assignments} = useSelector((state:any)=>state.assignmentsReducer);
+    const currentAssignment = assignments.filter((assignment:any)=>assignment._id===aid);
     const currentCourse = courses.filter((course)=>course._id===cid);
-
+    const [assignment] = currentAssignment;
+    const dispatch = useDispatch();
     return (
       
       <div id="wd-assignments-editor">
-        
-        {currentAssignment.map((assignment)=>(
+
           <div>
           <h5><label htmlFor="wd-name" className="form-label">Assignment Name</label></h5>
-          <input id="wd-name" className="form-control" value={assignment.title} />
+          <input id="wd-name" className="form-control" value={assignment ? assignment.title : "New Assignment"} />
           <br />
           <br />
 
           <textarea className="form-control" rows={10} cols={55} id="wd-description">
-          The assignment is available online
-          
-          Submit a link to the landing page of your Web Application
-          running on Netlify.
-          
-          The landing page should include the following:
-          
-          Your full name and section
-          Links to each of the lab assignments
-          Link to the Kanbas application
-          Links to all relevant source code repositories
-          
-          The Kanbas application should include a link to navigate 
-          back to the landing page.
+          {assignment ? assignment.description:"New Assignment Description"}
         </textarea>
         <br />
         <br/>
@@ -42,7 +32,7 @@ export default function AssignmentEditor() {
               <label htmlFor="wd-points" className="form-label">Points</label>
             </div>
             <div className="col-5">
-              <input className="form-control" id="wd-points" value={assignment.points} />
+              <input className="form-control" id="wd-points" value={assignment ? assignment.points : "100"} />
             </div>
           </div>
           <br/>
@@ -108,15 +98,15 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-assign-to" className="form-label">Assign To</label><br/>
                 <input className="form-control mb-3" type="text" name="wd-assign-to" id="wd-assign-to" value="Everyone"></input>
                 <label htmlFor="wd-due-date" className="form-label">Due</label><br/>
-                <input className="form-control mb-3" type="date" id="wd-due-date" value={assignment.dueDate}></input>
+                <input className="form-control mb-3" type="date" id="wd-due-date" value={assignment ? assignment.dueDate : ""}></input>
                 <div className="row">
                 <div className="col-6">
                 <label htmlFor="wd-available-from" className="form-label">Available From</label><br/>
-                <input className="form-control " type="date" id="wd-available-from" value={assignment.fromDate}></input>
+                <input className="form-control " type="date" id="wd-available-from" value={assignment ? assignment.fromDate : ""}></input>
                 </div>
                 <div className="col-6">
                 <label htmlFor="wd-available-until" className="form-label">Until</label><br/>
-                <input className="form-control" type="date" id="wd-available-until" value={assignment.dueDate}></input>
+                <input className="form-control" type="date" id="wd-available-until" value={assignment ? assignment.dueDate : ""}></input>
                 </div>
                 </div>
             </div>
@@ -136,7 +126,7 @@ export default function AssignmentEditor() {
             </div>
 
           </div>
-        ))}
+        
       </div>
     );
   }

@@ -6,9 +6,9 @@ import Home from "./Home";
 import { FaBars } from "react-icons/fa6";
 import { Navigate, Route, Routes, useParams, useLocation } from 'react-router-dom';
 import Grades from "./Grades/Grades";
-import { courses } from "../Database";
 
-export default function Courses() {
+
+export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   const course = courses.find((course)=>course._id===cid);
   const { pathname } = useLocation();

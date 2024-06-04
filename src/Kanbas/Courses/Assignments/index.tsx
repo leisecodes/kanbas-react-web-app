@@ -25,9 +25,9 @@ import { assignments } from "../../Database";
         <button id="wd-add-assignment-group" className="btn btn-lg btn-secondary me-1">
           <BsPlus/>
            Group</button>
-        <button id="wd-add-assignment" className="btn btn-danger btn-lg">
+        <Link to={`/Kanbas/Courses/${cid}/Assignments/new`} id="wd-add-assignment" className="btn btn-danger btn-lg">
         <BsPlus/>
-        Assignment</button>
+        Assignment</Link>
         </div>
         </div>
 
@@ -49,8 +49,8 @@ import { assignments } from "../../Database";
               <div className="flex-grow-1 mr-auto">
               <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment-link text-decoration-none"><span className="text-black fw-bolder">{assignment.title}</span></Link>
               <br />
-                <span className="text-danger">Multiple Modules</span> | <span className="fw-bold">Not available until</span> {assignment.available} |<br/>
-                <span className="fw-bold">Due</span> {assignment.due} | {assignment.points} pts
+                <span className="text-danger">Multiple Modules</span> | <span className="fw-bold">Not available until</span> {new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(new Date(assignment.fromDate))} at 12:00am |<br/>
+                <span className="fw-bold">Due</span> {new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(new Date(assignment.dueDate))} at 11:59pm | {assignment.points} pts
               </div>
               <div className="float-end ml-auto align-self-center"><LessonControlButtons/></div>
               </div>
