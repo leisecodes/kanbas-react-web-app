@@ -1,3 +1,5 @@
+import React from 'react';
+import { UseSelector, useSelector } from 'react-redux';
 import { BsPlus } from "react-icons/bs";
 import { BsGripVertical } from "react-icons/bs";
 import { RiFileEditLine } from "react-icons/ri";
@@ -10,7 +12,15 @@ import {Link, useParams} from 'react-router-dom';
 import { assignments } from "../../Database";
  export default function Assignments() {
     const { cid } = useParams();
-    const courseAssignments = assignments.filter((assignment)=>assignment.course===cid);
+    const selectAssignments = useSelector((state:any) => {
+      console.log("State:", state); 
+      return state.assignmentsReducer.assignments;});
+    console.log(selectAssignments);
+    //const [testAssignments] = selectAssignments;
+    //console.log(testAssignments);
+    console.log(Array.isArray(selectAssignments));
+    const courseAssignments = selectAssignments.filter((assignment:any)=>assignment.course === cid);
+
     return (
       <div id="wd-assignments">
         <div id="wd-assignment-buttons" className="mb-4 row d-flex w-100 justify-items-between" >
@@ -41,7 +51,7 @@ import { assignments } from "../../Database";
             </div>
           </li>
           <div className="border border-end-0 border-top-0 border-bottom-0 border-4 border-success">
-          {courseAssignments.map((assignment)=>(
+          {courseAssignments.map((assignment:any)=>(
             <li className="wd-assignment-list-item list-group-item p-3 ps-1">
               <div className="d-flex">
               <BsGripVertical className="me-3 fs-3 mr-auto align-self-center"/>
