@@ -61,7 +61,7 @@ export default function AssignmentEditor() {
 
           <div>
           <h5><label htmlFor="wd-name" className="form-label">Assignment Name</label></h5>
-          <input id="wd-name" className="form-control" placeholder="New Assignment" onChange={(e)=>setAssignmentName(e.target.value)} required value={assignmentName} />
+          <input id="wd-name" className="form-control" placeholder="New Assignment" onChange={(e)=>setAssignmentName(e.target.value)}  value={assignmentName} />
           <br />
           <br />
 
@@ -76,7 +76,7 @@ export default function AssignmentEditor() {
               <label htmlFor="wd-points" className="form-label">Points</label>
             </div>
             <div className="col-5">
-              <input className="form-control" placeholder="100" onChange={(e)=>setPoints(e.target.value)} required id="wd-points" value={points} />
+              <input className="form-control" placeholder="100" onChange={(e)=>setPoints(e.target.value)}  id="wd-points" value={points} />
             </div>
           </div>
           <br/>
