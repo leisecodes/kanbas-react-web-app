@@ -11,13 +11,14 @@ export default function AssignmentEditor() {
     const [assignmentName, setAssignmentName] = useState('');
     const [assignmentDescription, setAssignmentDescription] = useState('');
     const [points, setPoints] = useState('');
-    const [dueDate, setDueDate] = useState('');
-    const [availableDate, setAvailableDate] = useState('');
-    const [untilDate, setUntilDate] = useState('');
+    const [dueDate, setDueDate] = useState("2024-06-01");
+    const [availableDate, setAvailableDate] = useState("2024-06-01");
+    const [untilDate, setUntilDate] = useState("2024-06-01");
     const {assignments} = useSelector((state:any)=>state.assignmentsReducer);
     const currentAssignment = assignments.filter((assignment:any)=>assignment._id===aid);
     const currentCourse = courses.filter((course)=>course._id===cid);
     const [assignment] = currentAssignment;
+    const date = Date.now();
 
     useEffect(() => {
       if (assignment) {
@@ -58,7 +59,6 @@ export default function AssignmentEditor() {
     return (
       
       <div id="wd-assignments-editor">
-
           <div>
           <h5><label htmlFor="wd-name" className="form-label">Assignment Name</label></h5>
           <input id="wd-name" className="form-control" placeholder="New Assignment" onChange={(e)=>setAssignmentName(e.target.value)}  value={assignmentName} />
