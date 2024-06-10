@@ -4,7 +4,6 @@ import { assignments } from "../../Database";
 import { courses } from "../../Database";
 import { addAssignment, deleteAssignment, updateAssignment, editAssignment } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
-import * as client from './client';
 
 export default function AssignmentEditor() {
     const { aid } = useParams();
@@ -17,8 +16,9 @@ export default function AssignmentEditor() {
     const [untilDate, setUntilDate] = useState("2024-06-01");
     const {assignments} = useSelector((state:any)=>state.assignmentsReducer);
     const currentAssignment = assignments.filter((assignment:any)=>assignment._id===aid);
+    const currentCourse = courses.filter((course)=>course._id===cid);
     const [assignment] = currentAssignment;
-  
+    const date = Date.now();
 
     useEffect(() => {
       if (assignment) {
@@ -32,28 +32,9 @@ export default function AssignmentEditor() {
     }, [assignment]);
 
 
-
-  
-    
-
-    const dispatch = useDispatch();
-
-    const saveAssignment = async (assignment: any) => {
-      const status = await client.updateAssignment(assignment);
-      dispatch(updateAssignment(assignment));
-    };
-
-    const createAssignment = async (assignment: any) => {
-      const newAssignment = await client.createAssignment(cid as string, assignment);
-      dispatch(addAssignment(newAssignment));
-    };
-
-
-    const navigate = useNavigate();
-
     const handleSubmit = (e:any) => {
       e.preventDefault();
-      const assignmentUpdate = {
+      const saveAssignment = {
         _id: assignment ? aid : "",
         course: cid,
         title: assignmentName,
@@ -64,13 +45,17 @@ export default function AssignmentEditor() {
         untilDate,
       };
       if (assignment) {
-        saveAssignment(assignmentUpdate);
+        dispatch(updateAssignment(saveAssignment));
       } else {
-        createAssignment(assignmentUpdate);
+        dispatch(addAssignment(saveAssignment));
       }
       navigate(`/Kanbas/Courses/${cid}/Assignments`);
     };
+  
+    
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     return (
       
       <div id="wd-assignments-editor">

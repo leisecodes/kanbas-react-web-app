@@ -8,11 +8,10 @@ import { IoIosSearch } from "react-icons/io";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import {Link, useParams} from 'react-router-dom';
 import AssignmentSideButtons from './AssignmentSideButtons';
-import { useState, useEffect } from 'react';
+import { deleteAssignment } from './reducer';
+import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import ConfirmDelete from './ConfirmDelete';
-import * as client from "./client";
-import { setAssignments, addAssignment, deleteAssignment, updateAssignment, editAssignment } from './reducer';
  export default function Assignments() {
     const { cid } = useParams();
     const selectAssignments = useSelector((state:any) => {
@@ -25,36 +24,13 @@ import { setAssignments, addAssignment, deleteAssignment, updateAssignment, edit
 
     const dispatch = useDispatch();
 
-    const removeAssignment = async (assignmentId: string) => {
-      await client.deleteAssignment(assignmentId);
-      dispatch(deleteAssignment(assignmentId));
-    };
-
-    const saveAssignment = async (assignment: any) => {
-      const status = await client.updateAssignment(assignment);
-      dispatch(updateAssignment(assignment));
-    };
-
-    const createAssignment = async (assignment: any) => {
-      const newAssignment = await client.createAssignment(cid as string, assignment);
-      dispatch(addAssignment(newAssignment));
-    };
-
-    const fetchAssignments = async () => {
-      const modules = await client.findAssignmentsForCourse(cid as string);
-      dispatch(setAssignments(modules));
-    };
-    useEffect(() => {
-      fetchAssignments();
-    }, []);
-
     const handleDeleteClick = (id: string) => {
       setSelectedAssignmentId(id);
     };
 
     const handleDeleteConfirm = () => {
       if (selectedAssignmentId) {
-        removeAssignment(selectedAssignmentId);
+        dispatch(deleteAssignment(selectedAssignmentId));
         setSelectedAssignmentId(null);
       }
     };
