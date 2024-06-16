@@ -10,7 +10,8 @@ export default function CoursesNavigation() {
    {label : "Zoom"}, 
    {label : "Assignments"}, 
    {label : "Quizzes"}, 
-   {label : "Grades"}]
+   {label : "Grades"},
+   {label : "People"}]
     return (
       <div id="wd-courses-navigation" className="list-group fs-5 rounded-0 me-5">
       {links.map((link) => (
