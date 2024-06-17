@@ -7,7 +7,6 @@ import { FaBars } from "react-icons/fa6";
 import { Navigate, Route, Routes, useParams, useLocation } from 'react-router-dom';
 import Grades from "./Grades/Grades";
 import PeopleTable from "./People/Table";
-import PeopleDetails from "./People/Details";
 
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();

@@ -6,8 +6,6 @@ import GreenCheckmark from "./GreenCheckmark";
 import { BsPlus } from "react-icons/bs";
 import LessonControlButtons from "./LessonControlButtons";
 import { useParams } from "react-router-dom";
-import { modules } from "../../Database";
-import * as db from "../../Database";
 import { setModules, addModule, editModule, updateModule, deleteModule }
   from "./reducer";
 import { useSelector, useDispatch } from "react-redux";

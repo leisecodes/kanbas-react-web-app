@@ -1,8 +1,7 @@
 import "./styles.css";
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
-import { courses } from "../Database";
-import * as db from "../Database";
+
 export default function Dashboard(
   { courses, course, setCourse, addNewCourse,
     deleteCourse, updateCourse }: {
@@ -33,7 +32,7 @@ export default function Dashboard(
         <div id="wd-dashboard-courses" className="row">
           <div className="row row-cols-1 row cols-md-5 g-4">
             {courses.map((course:any)=> (
-              <div className="wd-dashboard-course col" style={{width: "260px"}}>
+              <div key={course._id} className="wd-dashboard-course col" style={{width: "260px"}}>
                 <Link to={`/Kanbas/Courses/${course._id}/Home`} className="text-decoration-none" >
                 <div className="card rounded-3 overflow-hidden">
                   <img src={course.image} height="{160}" />

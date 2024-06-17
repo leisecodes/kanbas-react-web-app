@@ -16,10 +16,12 @@ export default function PeopleDetails({ fetchUsers }:
   const { uid, cid } = useParams();
   const [user, setUser] = useState<any>({});
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [editing, setEditing] = useState(false);
   const saveUser = async () => {
     const [firstName, lastName] = name.split(" ");
-    const updatedUser = { ...user, firstName, lastName };
+    const updatedUser = { ...user, firstName, lastName, email, role };
     await client.updateUser(updatedUser);
     setUser(updatedUser);
     setEditing(false);
@@ -30,6 +32,9 @@ export default function PeopleDetails({ fetchUsers }:
     if (!uid) return;
     const user = await client.findUserById(uid);
     setUser(user);
+    setName(user.firstName +" "+ user.lastName);
+    setEmail(user.email);
+    setRole(user.role);
   };
   useEffect(() => {
     if (uid) fetchUser();
@@ -48,20 +53,41 @@ export default function PeopleDetails({ fetchUsers }:
           <FaCheck onClick={() => saveUser()}
                    className="float-end fs-5 mt-2 me-2" /> )}
         {!editing && (
+          <div>
           <div onClick={() => setEditing(true)}>
-            {user.firstName} {user.lastName}</div>)}
+            {user.firstName} {user.lastName}</div>
+          <div className="text-dark fs-6" onClick={()=> setEditing(true)}>
+            <b>Email:</b> {user.email} <br/>
+            <b>Role:</b> {user.role}
+          </div>
+            </div>)}
         {user && editing && (
-          <input className="form-control w-50"
+          <div>
+          <input className="form-control w-75"
             defaultValue={`${user.firstName} ${user.lastName}`}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") { saveUser(); }}}
           />
+          <input className="form-control w-100" type="email"
+            defaultValue={`${user.email}`} 
+            onChange={(e)=> setEmail(e.target.value)}
+            onKeyDown={(e)=>{if (e.key==="Enter"){saveUser();}}}
+            />
+        <select value={role} onChange={(e) =>setRole(e.target.value)} className="form-select float-start w-100 pb-2" >
+        <option value="STUDENT">Student</option>
+        <option value="TA">Assistant</option>     
+        <option value="FACULTY">Faculty</option>
+      </select>
+          </div>
         )}
       </div>
-      <b>Roles:</b> {user.role} <br />           <b>Login ID:</b> {user.loginId} <br />
-      <b>Section:</b> {user.section} <br />      <b>Total Activity:</b> {user.totalActivity} 
+      <div className="">
+      <b>Login ID:</b> {user.loginId} <br />
+      <b>Section:</b> {user.section} <br />      
+      <b>Total Activity:</b> {user.totalActivity} 
       <hr />
+      </div>
       <button onClick={() => deleteUser(uid)} className="btn btn-danger float-end" > Delete </button>
       <button onClick={() => navigate(`/Kanbas/Courses/${cid}/People`)}
               className="btn btn-secondary float-start float-end me-2" > Cancel </button>
