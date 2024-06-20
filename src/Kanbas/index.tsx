@@ -10,6 +10,9 @@ import store from "./store";
 import { Provider } from "react-redux";
 import Account from "./Account";
 import ProtectedRoute from "./ProtectedRoute";
+import QuizDetails from "./Courses/Quizzes/QuizDetails";
+import DetailsEditor from "./Courses/Quizzes/QuizEditor/DetailsEditor";
+import QuestionEditor from "./Courses/Quizzes/QuizEditor/QuestionsEditor";
 export default function Kanbas() {
   
   const [courses, setCourses] = useState<any[]>([]);
@@ -73,6 +76,7 @@ export default function Kanbas() {
               <Route path="Courses/:cid/*" element={<ProtectedRoute><Courses courses={courses}/></ProtectedRoute>} />
               <Route path="Courses/:cid/Assignments/:aid/*" element={<AssignmentEditor/>}/>
               <Route path="Courses/:cid/Assignments/new" element={<AssignmentEditor/>}/>
+              <Route path="Courses/:cid/Quizzes/:qid/*" element={<QuizDetails/>}/>
             </Routes>
       </div>
       </div>

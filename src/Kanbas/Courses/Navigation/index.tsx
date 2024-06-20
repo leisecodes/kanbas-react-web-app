@@ -20,8 +20,6 @@ export default function CoursesNavigation() {
           {link.label}
         </Link>
       ))}
-
-      
       </div>
   );}
   

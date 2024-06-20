@@ -7,7 +7,11 @@ import { FaBars } from "react-icons/fa6";
 import { Navigate, Route, Routes, useParams, useLocation } from 'react-router-dom';
 import Grades from "./Grades/Grades";
 import PeopleTable from "./People/Table";
-
+import QuizList from "./Quizzes";
+import QuizDetails from "./Quizzes/QuizDetails";
+import DetailsEditor from "./Quizzes/QuizEditor/DetailsEditor";
+import QuestionEditor from "./Quizzes/QuizEditor/QuestionsEditor";
+import QuizEditor from "./Quizzes/QuizEditor";
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   const course = courses.find((course)=>course._id===cid);
@@ -39,6 +43,9 @@ export default function Courses({ courses }: { courses: any[]; }) {
               <Route path="People/:uid" element={<PeopleTable />} />
               <Route path="Grades"
                      element={<Grades/>}/>
+              <Route path="Quizzes" element={<QuizList/>}/>
+              <Route path="Quizzes/:qid" element={<QuizDetails />}/>
+              <Route path="Quizzes/:qid/*" element={<QuizEditor setEditing={""}/>}/>
             </Routes>
             </div>
           </div>
