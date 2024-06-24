@@ -29,9 +29,9 @@ export default function QuizEditor({setEditing}) {
     const [group, setGroup] = useState("");
     const [shuffle, setShuffle] = useState(true);
     const [timeLimit, setTimeLimit] = useState(0);
-    const [dueDate, setDueDate] = useState("");
-    const [availableDate, setAvailableDate] = useState("");
-    const [untilDate, setUntilDate] = useState("");
+    const [dueDate, setDueDate] = useState<any>();
+    const [availableDate, setAvailableDate] = useState<any>();
+    const [untilDate, setUntilDate] = useState<any>();
     const [attempts, setAttempts] = useState(false);
     const [numAttempts, setNumAttempts] = useState(1);
     const [oneQuestion, setOneQuestion] = useState(true);
@@ -39,8 +39,15 @@ export default function QuizEditor({setEditing}) {
     const [lock, setLock] = useState(false);
     const [showAnswers, setShowAnswers] = useState("");
     const [code, setCode] = useState("");
+    const [points, setPoints] = useState(0);
     const [questions, setQuestions] = useState<any>({});
     const [published, setPublished] = useState(false);
+    const [dString, setDString] = useState("2024-06-01");
+    const [aString, setAString] = useState("2024-07-31");
+    const [uString, setUString] = useState("2024-08-01");
+    const [isTimed, setIsTimed] = useState(false);
+    const [newType, setNewType] = useState("MULTIPLE CHOICE");
+
     const fetchQuiz = async () => {
         if (!qid) return;
         const quiz = await client.findQuizById(qid);
@@ -63,11 +70,20 @@ export default function QuizEditor({setEditing}) {
         setCode(quiz.accessCode);
         setQuestions(quiz.questions);
         setPublished(quiz.isPublished);
+        const pointCount = quiz.questions.reduce((acc, curr) => acc + curr.points, 0);
+        setPoints(pointCount);
+        setDString(quiz.dueDate.substring(0,10));
+        setAString(quiz.availableDate.substring(0,10));
+        setUString(quiz.untilDate.substring(0,10));
+        if (quiz.timeLimit > 0) {setIsTimed(true)}
     }
+
     useEffect(() => {
         if (qid) fetchQuiz();
+
     }, [qid]);
     if (!qid) return null;
+
 
     const toggleEditQuestion = (questionId) => {
         setEditingQuestions((prev) =>
@@ -94,16 +110,21 @@ export default function QuizEditor({setEditing}) {
         toggleEditQuestion(qid);
     };
 
-
     const addNewQuestion = () => {
         const newQuestion = {
             _id: generateUniqueId(),
             title: 'New Question',
             questionText: '',
-            type: 'MULTIPLE CHOICE',
+            type: newType,
             points: 0,
             choices: [],
         };
+        if (newQuestion.type.includes("TRUE/FALSE")) {
+            const newAnswerT = { _id: generateUniqueId(), choiceText: 'True', isCorrect: true };
+            const newAnswerF = { _id: generateUniqueId(), choiceText: 'False', isCorrect: false };
+            newQuestion.choices.push(newAnswerT);
+            newQuestion.choices.push(newAnswerF);
+        }
         setQuestions([...questions, newQuestion]);
         setQuiz({ ...quiz, questions: questions });
     };
@@ -121,6 +142,50 @@ export default function QuizEditor({setEditing}) {
         setQuiz({ ...quiz, questions: updatedQuestions });
     };
 
+    const handleUncheck = () => {
+        setTimeLimit(0);
+        setIsTimed(false);
+    }
+
+    const handleCheck = () => {
+        setTimeLimit(timeLimit);
+        setIsTimed(true);
+    }
+
+    const handleShuffleCheck = () => {
+        setShuffle(true)
+    }
+    const handleShuffleUncheck = () => {
+        setShuffle(false)
+    }
+    const handleAttemptsCheck = () => {
+        setAttempts(true);
+        setNumAttempts(numAttempts);
+    }
+    const handleAttemptsUncheck = () => {
+        setAttempts(false);
+        setNumAttempts(1);
+    }
+
+    const handleOneCheck = () => {
+        setOneQuestion(true);
+    }
+    const handleOneUncheck = () => {
+        setOneQuestion(false);
+    }
+
+    const handleWebcamCheck = () => {
+        setWebcam(true);
+    }
+    const handleWebcamUncheck = () => {
+        setWebcam(false);
+    }
+    const handleLockCheck = () => {
+        setLock(true);
+    }
+    const handleLockUncheck = () => {
+        setLock(false);
+    }
     const handleSave = async () => {
         quiz.name = quizName;
         quiz.description = quizDescription;
@@ -139,10 +204,25 @@ export default function QuizEditor({setEditing}) {
         quiz.showAnswers = showAnswers;
         quiz.accessCode = code;
         quiz.questions = questions;
-
-        await client.updateQuiz(quiz)
+        await client.updateQuiz(quiz);
         setEditing(false);
+        fetchQuiz();
+        
     };
+
+    const handleDueDateChange = (value) => {
+        setDueDate(value);
+        setDString(value.substring(0,10));
+    }
+    const handleAvailableDateChange = (value) => {
+        setDueDate(value);
+        setAString(value.substring(0,10));
+    }
+    const handleUntilDateChange = (value) => {
+        setDueDate(value);
+        setUString(value.substring(0,10));
+    }
+
 
     const handleSaveandPublish = async ()=> {
         setPublished(true);
@@ -160,7 +240,7 @@ export default function QuizEditor({setEditing}) {
 
     return (
         <div>
-            <h1>Quiz Editor</h1>
+            <h1>Quiz Editor </h1>
             <div id="wd-courses-navigation" className="">
                 <ul className="nav nav-tabs">
                     <li className="nav-item"><button className="nav-link" onClick={(e) => { setQuestionEdit(false) }}>Details</button></li>
@@ -234,7 +314,7 @@ export default function QuizEditor({setEditing}) {
                         <div className="col-6 text-end">
                         </div>
                         <div className="col-6">
-                            <input defaultChecked={shuffle} onChange={(e) => { setShuffle(e.target.checked) }} className="form-check-input" type="checkbox" name="wd-shuffle" id="wd-shuffle"></input>
+                            <input checked={shuffle} onChange={(e) => { !(e.target.checked) ? (handleShuffleUncheck()):handleShuffleCheck() }} className="form-check-input" type="checkbox" name="wd-shuffle" id="wd-shuffle"></input>
                             <label htmlFor="wd-shuffle" className="form-check-label ms-2 pb-2">Shuffle Answers</label>
                         </div>
                     </div>
@@ -242,13 +322,13 @@ export default function QuizEditor({setEditing}) {
                         <div className="col-6 text-end">
                         </div>
                         <div className="col-2 d-flex">
-                            <input defaultChecked={!(timeLimit === 0)} onChange={(e) => { !(e.target.checked) ? setTimeLimit(0) : setTimeLimit(timeLimit); }} className="form-check-input" type="checkbox" name="wd-time" id="wd-time"></input>
+                            <input checked={isTimed} onChange={(e) => { !(e.target.checked) ? (handleUncheck()) : (handleCheck()); }} className="form-check-input" type="checkbox" name="wd-time" id="wd-time"></input>
                             <label htmlFor="wd-time" className="form-check-label ms-2 pb-2">Time Limit</label>
                         </div>
-                        <div className="col-1 text-end">
+                        <div className="col-2 text-end">
                             <input id="wd-minutes" type="number" className="form-control align-self-center" placeholder="" onChange={(e)=>setTimeLimit(e.target.valueAsNumber)} value={timeLimit}></input>
                         </div>
-                        <div className="col-3 text-start">
+                        <div className="col-2 text-start">
                             <label className="align-self-center" htmlFor="wd-minutes">Minutes</label>
                         </div>
                     </div>
@@ -256,7 +336,7 @@ export default function QuizEditor({setEditing}) {
                         <div className="col-6 text-end">
                         </div>
                         <div className="col-6">
-                            <input defaultChecked={attempts} onChange={(e) => { setAttempts(e.target.checked) }} className="form-check-input" type="checkbox" name="wd-attempts" id="wd-attempts"></input>
+                            <input checked={attempts} onChange={(e) => { !(e.target.checked)? handleAttemptsUncheck():handleAttemptsCheck() }} className="form-check-input" type="checkbox" name="wd-attempts" id="wd-attempts"></input>
                             <label htmlFor="wd-attempts" className="form-check-label ms-2 pb-2">Allow Multiple Attempts</label>
                         </div>
                     </div>
@@ -278,7 +358,7 @@ export default function QuizEditor({setEditing}) {
                         <div className="col-6 text-end">
                         </div>
                         <div className="col-6">
-                            <input defaultChecked={oneQuestion} onChange={(e) => { setOneQuestion(e.target.checked) }} className="form-check-input" type="checkbox" name="wd-oneQuestion" id="wd-oneQuestion"></input>
+                            <input checked={oneQuestion} onChange={(e) => { !(e.target.checked)?handleOneUncheck():handleOneCheck() }} className="form-check-input" type="checkbox" name="wd-oneQuestion" id="wd-oneQuestion"></input>
                             <label htmlFor="wd-oneQuestion" className="form-check-label ms-2 pb-2">Show One Question at a Time</label>
                         </div>
                     </div>
@@ -286,7 +366,7 @@ export default function QuizEditor({setEditing}) {
                         <div className="col-6 text-end">
                         </div>
                         <div className="col-6">
-                            <input defaultChecked={webcam} onChange={(e) => { setWebcam(e.target.checked) }} className="form-check-input" type="checkbox" name="wd-webcam" id="wd-webcam"></input>
+                            <input checked={webcam} onChange={(e) => { !(e.target.checked)?handleWebcamUncheck():handleWebcamCheck() }} className="form-check-input" type="checkbox" name="wd-webcam" id="wd-webcam"></input>
                             <label htmlFor="wd-webcam" className="form-check-label ms-2 pb-2">Webcam Required</label>
                         </div>
                     </div>
@@ -294,7 +374,7 @@ export default function QuizEditor({setEditing}) {
                         <div className="col-6 text-end">
                         </div>
                         <div className="col-6">
-                            <input defaultChecked={lock} onChange={(e) => { setLock(e.target.checked) }} className="form-check-input" type="checkbox" name="wd-lock" id="wd-lock"></input>
+                            <input checked={lock} onChange={(e) => { !(e.target.checked)?handleLockUncheck():handleLockCheck() }} className="form-check-input" type="checkbox" name="wd-lock" id="wd-lock"></input>
                             <label htmlFor="wd-lock" className="form-check-label ms-2 pb-2">Lock Questions after Answering</label>
                         </div>
                     </div>
@@ -326,15 +406,15 @@ export default function QuizEditor({setEditing}) {
                             <label htmlFor="wd-assign-to" className="form-label"><b>Assign To</b></label><br />
                             <input className="form-control mb-3" type="text" name="wd-assign-to" id="wd-assign-to" value="Everyone"></input>
                             <label htmlFor="wd-due-date" className="form-label"><b>Due</b></label><br />
-                            <input className="form-control mb-3" type="date" id="wd-due-date" onChange={(e) => setDueDate(e.target.value)} value={dueDate}  ></input>
+                            <input className="form-control mb-3" type="date" value={dString} id="wd-due-date" onChange={(e) => handleDueDateChange(e.target.value)}></input>
                             <div className="row">
                                 <div className="col-6">
                                     <label htmlFor="wd-available-from" className="form-label"><b>Available From</b></label><br />
-                                    <input className="form-control " type="date" id="wd-available-from" onChange={(e) => setAvailableDate(e.target.value)} value={availableDate} ></input>
+                                    <input className="form-control " type="date" id="wd-available-from" onChange={(e) => handleAvailableDateChange(e.target.value)} value={aString} ></input>
                                 </div>
                                 <div className="col-6">
                                     <label htmlFor="wd-available-until" className="form-label"><b>Until</b></label><br />
-                                    <input className="form-control" type="date" id="wd-available-until" onChange={(e) => setUntilDate(e.target.value)} value={untilDate} ></input>
+                                    <input className="form-control" type="date" id="wd-available-until" onChange={(e) => handleUntilDateChange(e.target.value)} value={uString} ></input>
                                 </div>
                             </div>
                         </div>
@@ -349,7 +429,14 @@ export default function QuizEditor({setEditing}) {
             )}
             {questionEdit && 
                 (   <div>
+                    <div className="d-flex">
                     <button className="btn btn-danger mb-3 mt-3 ms-1" onClick={(e)=>addNewQuestion()}>New Question</button>
+                    <select value={newType} onChange={(e) => setNewType(e.target.value)} className="form-select w-25 ms-2 mt-2 mb-2" >
+                        <option value="MULTIPLE CHOICE">Multiple Choice</option>
+                        <option value="TRUE/FALSE">True or False</option>
+                        <option value="FILL IN">Fill in the Blank</option>
+                    </select>
+                    </div>
                     <ul className="list-group rounded-2 w-100">
                         {questions.map((q: any) => (
                             <div key="q._id">
@@ -368,7 +455,7 @@ export default function QuizEditor({setEditing}) {
                                     <li className="wd-quiz-list-item list-group-item p-2 ps-1 w-100" key={c._id}>
                                         {!(q.type.includes("FILL IN")) && (
                                             <div>
-                                            <input className="form-check-input ms-1" type="radio" name="flexRadioDefault" id="flexRadioDefault1"></input>
+                                            <input className="form-check-input ms-1" checked={c.isCorrect} type="radio" name="flexRadioDefault" id="flexRadioDefault1"></input>
                                             <label className="form-check-label ps-2" htmlFor="flexRadioDefault1">
                                             {c.choiceText}
                                     

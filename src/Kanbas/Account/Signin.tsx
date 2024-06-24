@@ -29,6 +29,11 @@ export default function Signin() {
       <button onClick={signin} className="btn btn-primary w-100"> Sign in </button>
       <br />
       <Link to="/Kanbas/Account/Signup">Sign up</Link>
+      <div className="mt-5">
+      <h4>Project Details: </h4>
+      <h5>Name: Leise Crandall</h5>
+      <h6>Section: 01, Summer 1 2024</h6>
+      </div>
     </div>
   );
 }

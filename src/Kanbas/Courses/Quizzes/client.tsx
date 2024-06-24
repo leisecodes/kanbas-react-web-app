@@ -13,8 +13,8 @@ export const updateQuiz = async (quiz:any) => {
     return response.data;
 }
 
-export const createQuiz = async (courseId: string, quiz: any) =>{
-    const response = await axios.post(`${COURSES_API}/${courseId}/quizzes`, quiz);
+export const createQuiz = async (courseId: string) =>{
+    const response = await axios.post(`${COURSES_API}/${courseId}/quizzes`);
     return response.data;
 };
 
