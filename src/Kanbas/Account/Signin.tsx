@@ -33,7 +33,8 @@ export default function Signin() {
       <h4>Project Details: </h4>
       <h5>Name: Leise Crandall</h5>
       <h6>Section: 01, Summer 1 2024</h6>
-      <Link className="me-2" to={`https://project--vocal-maamoul-520a0b.netlify.app/`}>Netlify</Link>
+      <Link className="me-2" to={`https://github.com/leisecodes/kanbas-react-web-app/tree/project`}>React App GitHub</Link>
+      <Link className="me-2" to={`https://github.com/leisecodes/kanbas-node-server-app/tree/project`}>Node Server GitHub</Link>
       <Link to={`https://kanbas-node-server-app-2-70mc.onrender.com`}>Render</Link>
       </div>
     </div>
